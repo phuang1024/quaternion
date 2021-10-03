@@ -1,0 +1,9 @@
+.vscode
+
+*.o
+*.a
+*.so
+
+*.qif
+*.png
+*.jpg
