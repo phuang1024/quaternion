@@ -114,6 +114,10 @@ struct Tri {
 
 /**
  * Mesh is a collection of triangles along with transformations.
+ * Transformations are applied in this order:
+ * - rotation (TODO)
+ * - scale
+ * - location
  */
 struct Mesh {
     /**
@@ -133,6 +137,13 @@ struct Mesh {
  * Compute normal of a triangle and store in a vector.
  */
 void get_normal(PF3D& dest, Tri& tri);
+
+/**
+ * Preprocess the mesh (modifies it in place):
+ * - Apply transformations to each face.
+ * - Calculate the normal of each face and store in Tri.normal
+ */
+void preprocess(Mesh& mesh);
 
 
 }  // namespace Quaternion

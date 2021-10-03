@@ -22,6 +22,7 @@
 
 namespace Quaternion {
 
+
 Tri::Tri() {
     p1 = {0, 0, 0};
     p2 = {0, 0, 0};
@@ -61,5 +62,29 @@ void get_normal(PF3D& dest, Tri& tri) {
     dest(1) = a(2)*b(0) - a(0)*b(2);
     dest(2) = a(0)*b(1) - a(1)*b(0);
 }
+
+
+void preprocess_point(Eigen::Vector3f& point, Mesh& mesh) {
+    // Helper function
+    point(0) *= mesh.scale(0);
+    point(1) *= mesh.scale(1);
+    point(2) *= mesh.scale(2);
+    point(0) += mesh.location(0);
+    point(1) += mesh.location(1);
+    point(2) += mesh.location(2);
+}
+
+void preprocess(Mesh& mesh) {
+    for (int i = 0; i < mesh.faces.size(); i++) {
+        Tri& face = mesh.faces[i];
+        preprocess_point(face.p1, mesh);
+        preprocess_point(face.p2, mesh);
+        preprocess_point(face.p3, mesh);
+        get_normal(face.normal, face);
+    }
+    mesh.location = {0, 0, 0};
+    mesh.scale = {1, 1, 1};
+}
+
 
 }  // namespace Quaternion
