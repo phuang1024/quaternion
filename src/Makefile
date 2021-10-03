@@ -18,7 +18,7 @@
 #
 
 CXX = g++
-CXXFLAGS = -Wall -O3
+CXXFLAGS = -Wall -O3 -fPIC
 CXXFILES = image.o mesh.o
 
 .PHONY: exe lib clean
