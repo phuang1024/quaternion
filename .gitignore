@@ -3,6 +3,7 @@
 *.o
 *.a
 *.so
+*.out
 
 *.qif
 *.png
