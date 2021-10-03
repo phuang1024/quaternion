@@ -21,14 +21,17 @@ CXX = g++
 CXXFLAGS = -Wall -O3 -fPIC
 CXXFILES = image.o mesh.o
 
-.PHONY: exe lib clean
+.PHONY: exe static dynamic clean
 
 # Build executable for testing.
-exe: lib
+exe: static
 	$(CXX) $(CXXFLAGS) main.cpp -L. -lquaternion
 
-lib: $(CXXFILES)
+static: $(CXXFILES)
 	$(CXX) -shared $(CXXFILES) -o libquaternion.a
+
+dynamic: $(CXXFILES)
+	$(CXX) -shared -Wl,-soname,libquaternion.so $(CXXFILES) -o libquaternion.so
 
 clean:
 	rm *.o
