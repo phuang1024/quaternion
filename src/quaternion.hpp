@@ -21,6 +21,11 @@
 namespace Quaternion {
 
 
+// Including here so won't pollute global.
+
+#include <string>
+
+
 // Useful stuff
 typedef  unsigned char  UCH;
 
@@ -57,6 +62,13 @@ struct Image {
      * Channel 0 is R, 1 is G, 2 is B.
      */
     void set(int x, int y, int channel, UCH value);
+
+    /**
+     * Write image as unstandardized binary format.
+     * Recommended extension: .qif (quaternion image format).
+     * See docs for more info.
+     */
+    void write(std::string path);
 
     /**
      * Size is width * height * 3

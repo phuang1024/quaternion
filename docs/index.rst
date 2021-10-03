@@ -10,3 +10,4 @@ A 3D raytracer.
 
    about.rst
    build.rst
+   image.rst

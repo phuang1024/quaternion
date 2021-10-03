@@ -17,6 +17,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#include <fstream>
+
 #include "quaternion.hpp"
 
 
@@ -43,6 +45,14 @@ UCH Image::get(int x, int y, int channel) {
 
 void Image::set(int x, int y, int channel, UCH value) {
     mem[mempos(x, y, channel)] = value;
+}
+
+void Image::write(std::string path) {
+    std::ofstream fp(path);
+
+    fp.write((char*)&width, sizeof(width));
+    fp.write((char*)&height, sizeof(height));
+    fp.write((char*)mem, width*height*3);
 }
 
 
