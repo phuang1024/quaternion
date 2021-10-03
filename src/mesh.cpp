@@ -40,4 +40,26 @@ Tri::Tri(Tri& other) {
     p3 = other.p3;
 }
 
+
+Mesh::Mesh() {
+    location = {0, 0, 0};
+    scale = {1, 1, 1};
+}
+
+Mesh::Mesh(Mesh& other) {
+    location = other.location;
+    scale = other.scale;
+    faces = other.faces;
+}
+
+
+void get_normal(PF3D& dest, Tri& tri) {
+    // From https://stackoverflow.com/questions/19350792
+    const PF3D a = tri.p2 - tri.p1;
+    const PF3D b = tri.p3 - tri.p1;
+    dest(0) = a(1)*b(2) - a(2)*b(1);
+    dest(1) = a(2)*b(0) - a(0)*b(2);
+    dest(2) = a(0)*b(1) - a(1)*b(0);
+}
+
 }  // namespace Quaternion

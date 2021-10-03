@@ -129,5 +129,10 @@ struct Mesh {
     PF3D scale;
 };
 
+/**
+ * Compute normal of a triangle and store in a vector.
+ */
+void get_normal(PF3D& dest, Tri& tri);
+
 
 }  // namespace Quaternion
