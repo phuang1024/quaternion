@@ -17,17 +17,19 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#include <string>
+#include <vector>
+
+#include <Eigen/Dense>
+
 
 namespace Quaternion {
 
 
-// Including here so won't pollute global.
-
-#include <string>
-
-
 // Useful stuff
 typedef  unsigned char  UCH;
+
+typedef  Eigen::Vector3f  PF3D;
 
 
 // Image processing
@@ -82,6 +84,49 @@ struct Image {
      * You can change these, but you shouldn't.
      */
     int width, height;
+};
+
+
+// Mesh API
+
+/**
+ * Triangle in 3D space, defined by three points.
+ */
+struct Tri {
+    /**
+     * All three points are (0, 0, 0)
+     */
+    Tri();
+
+    Tri(PF3D& p1, PF3D& p2, PF3D& p3);
+
+    Tri(Tri& other);
+
+    PF3D p1, p2, p3;
+
+    /**
+     * MAY NOT be correct. Set by the preprocessor.
+     * Vector representing the direction of the face.
+     * Also consider -1 * normal as the correct normal.
+     */
+    PF3D normal;
+};
+
+/**
+ * Mesh is a collection of triangles along with transformations.
+ */
+struct Mesh {
+    /**
+     * No faces, location = (0, 0, 0), scale = (1, 1, 1).
+     */
+    Mesh();
+
+    Mesh(Mesh& other);
+
+    std::vector<Tri> faces;
+
+    PF3D location;
+    PF3D scale;
 };
 
 
