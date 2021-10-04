@@ -104,7 +104,7 @@ struct Tri {
 
     Tri(PF3D& p1, PF3D& p2, PF3D& p3);
 
-    Tri(Tri& other);
+    Tri(const Tri& other);
 
     PF3D p1, p2, p3;
 
@@ -150,6 +150,21 @@ struct Camera {
 };
 
 /**
+ * Uniform spherical light object.
+ */
+struct Light {
+    Light();
+
+    /**
+     * Initialize with power.
+     */
+    Light(float power);
+
+    PF3D location;
+    float power;
+};
+
+/**
  * Groups together meshes and a camera.
  * Pass this to the render function.
  */
@@ -157,6 +172,7 @@ struct Scene {
     Scene();
 
     std::vector<Mesh> meshes;
+    std::vector<Light> lights;
     Camera cam;
     RGB background;
 };

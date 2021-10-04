@@ -35,7 +35,7 @@ Tri::Tri(PF3D& p1, PF3D& p2, PF3D& p3) {
     this->p3 = p3;
 }
 
-Tri::Tri(Tri& other) {
+Tri::Tri(const Tri& other) {
     p1 = other.p1;
     p2 = other.p2;
     p3 = other.p3;
@@ -59,6 +59,15 @@ Mesh::Mesh(Mesh& other) {
 Camera::Camera() {
     location = {0, 0, 0};
     fov = 1.28;
+}
+
+
+Light::Light() {
+    power = 1;
+}
+
+Light::Light(float power) {
+    this->power = power;
 }
 
 
