@@ -23,13 +23,17 @@
 #include <Eigen/Dense>
 
 
-namespace Quaternion {
-
-
 // Useful stuff
 typedef  unsigned char  UCH;
 
-typedef  Eigen::Vector3f  PF3D;
+typedef  Eigen::Vector3f           PF3D;
+typedef  Eigen::Matrix<UCH, 3, 1>  RGB;
+
+
+/**
+ * API and processing.
+ */
+namespace Quaternion {
 
 
 // Image processing
@@ -128,6 +132,7 @@ struct Mesh {
     Mesh(Mesh& other);
 
     std::vector<Tri> faces;
+    RGB color;
 
     PF3D location;
     PF3D scale;
@@ -144,9 +149,16 @@ struct Camera {
     float fov;
 };
 
+/**
+ * Groups together meshes and a camera.
+ * Pass this to the render function.
+ */
 struct Scene {
+    Scene();
+
     std::vector<Mesh> meshes;
     Camera cam;
+    RGB background;
 };
 
 /**
@@ -163,3 +175,14 @@ void preprocess(Mesh& mesh);
 
 
 }  // namespace Quaternion
+
+
+/**
+ * Render engine 1.
+ * Raytracer with no transparency or sss.
+ */
+namespace QRender1 {
+
+
+
+}  // namespace QRender1

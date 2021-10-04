@@ -43,19 +43,27 @@ Tri::Tri(Tri& other) {
 
 
 Mesh::Mesh() {
+    color = {255, 255, 255};
     location = {0, 0, 0};
     scale = {1, 1, 1};
 }
 
 Mesh::Mesh(Mesh& other) {
+    faces = other.faces;
+    color = other.color;
     location = other.location;
     scale = other.scale;
-    faces = other.faces;
 }
 
 
 Camera::Camera() {
+    location = {0, 0, 0};
     fov = 1.28;
+}
+
+
+Scene::Scene() {
+    background = {60, 60, 60};
 }
 
 
