@@ -129,7 +129,7 @@ struct Mesh {
      */
     Mesh();
 
-    Mesh(Mesh& other);
+    Mesh(const Mesh& other);
 
     std::vector<Tri> faces;
     RGB color;
@@ -160,6 +160,11 @@ struct Light {
      */
     Light(float power);
 
+    /**
+     * Initialize with location.
+     */
+    Light(PF3D location);
+
     PF3D location;
     float power;
 };
@@ -176,6 +181,11 @@ struct Scene {
     Camera cam;
     RGB background;
 };
+
+/**
+ * Create a cube mesh with side length size at the origin.
+ */
+Mesh primitive_cube(float size);
 
 /**
  * Compute normal of a triangle and store in a vector.

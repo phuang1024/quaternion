@@ -48,7 +48,7 @@ Mesh::Mesh() {
     scale = {1, 1, 1};
 }
 
-Mesh::Mesh(Mesh& other) {
+Mesh::Mesh(const Mesh& other) {
     faces = other.faces;
     color = other.color;
     location = other.location;
@@ -70,9 +70,43 @@ Light::Light(float power) {
     this->power = power;
 }
 
+Light::Light(PF3D location) {
+    this->location = location;
+}
+
 
 Scene::Scene() {
     background = {60, 60, 60};
+}
+
+
+Mesh primitive_cube(float size) {
+    const float half = size / 2.0;
+
+    PF3D v1({-half, -half, half});
+    PF3D v2({-half, half, half});
+    PF3D v3({half, half, half});
+    PF3D v4({half, -half, half});
+    PF3D v5({-half, -half, -half});
+    PF3D v6({-half, half, -half});
+    PF3D v7({half, half, -half});
+    PF3D v8({half, -half, -half});
+
+    Mesh mesh;
+    mesh.faces.push_back(Tri(v1, v2, v4));
+    mesh.faces.push_back(Tri(v3, v2, v4));
+    mesh.faces.push_back(Tri(v5, v6, v8));
+    mesh.faces.push_back(Tri(v7, v6, v8));
+    mesh.faces.push_back(Tri(v1, v4, v5));
+    mesh.faces.push_back(Tri(v8, v4, v5));
+    mesh.faces.push_back(Tri(v2, v3, v6));
+    mesh.faces.push_back(Tri(v7, v3, v6));
+    mesh.faces.push_back(Tri(v1, v2, v5));
+    mesh.faces.push_back(Tri(v6, v2, v5));
+    mesh.faces.push_back(Tri(v4, v3, v7));
+    mesh.faces.push_back(Tri(v4, v8, v7));
+
+    return mesh;
 }
 
 

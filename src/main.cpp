@@ -19,7 +19,12 @@
 
 #include <iostream>
 
+#include "quaternion.hpp"
+
 
 int main() {
-    std::cout << "hi" << std::endl;
+    Quaternion::Scene scene;
+    scene.meshes.push_back(Quaternion::primitive_cube(2));
+    scene.lights.push_back(Quaternion::Light({3, -2, 4}));
+    scene.cam.location = {0, -5, 1};
 }
