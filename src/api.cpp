@@ -97,7 +97,7 @@ void preprocess_point(Eigen::Vector3f& point, Mesh& mesh) {
 }
 
 void preprocess(Mesh& mesh) {
-    for (int i = 0; i < mesh.faces.size(); i++) {
+    for (int i = 0; i < (int)mesh.faces.size(); i++) {
         Tri& face = mesh.faces[i];
         preprocess_point(face.p1, mesh);
         preprocess_point(face.p2, mesh);
