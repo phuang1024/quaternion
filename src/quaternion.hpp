@@ -176,6 +176,9 @@ struct Light {
 struct Scene {
     Scene();
 
+    float clip_start;
+    float clip_end;
+
     std::vector<Mesh> meshes;
     std::vector<Light> lights;
     Camera cam;

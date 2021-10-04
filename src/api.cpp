@@ -76,6 +76,8 @@ Light::Light(PF3D location) {
 
 
 Scene::Scene() {
+    clip_start = 0.01;
+    clip_end = 1000.0;
     background = {60, 60, 60};
 }
 
@@ -107,39 +109,6 @@ Mesh primitive_cube(float size) {
     mesh.faces.push_back(Tri(v4, v8, v7));
 
     return mesh;
-}
-
-
-void get_normal(PF3D& dest, Tri& tri) {
-    // From https://stackoverflow.com/questions/19350792
-    const PF3D a = tri.p2 - tri.p1;
-    const PF3D b = tri.p3 - tri.p1;
-    dest(0) = a(1)*b(2) - a(2)*b(1);
-    dest(1) = a(2)*b(0) - a(0)*b(2);
-    dest(2) = a(0)*b(1) - a(1)*b(0);
-}
-
-
-void preprocess_point(Eigen::Vector3f& point, Mesh& mesh) {
-    // Helper function
-    point(0) *= mesh.scale(0);
-    point(1) *= mesh.scale(1);
-    point(2) *= mesh.scale(2);
-    point(0) += mesh.location(0);
-    point(1) += mesh.location(1);
-    point(2) += mesh.location(2);
-}
-
-void preprocess(Mesh& mesh) {
-    for (int i = 0; i < (int)mesh.faces.size(); i++) {
-        Tri& face = mesh.faces[i];
-        preprocess_point(face.p1, mesh);
-        preprocess_point(face.p2, mesh);
-        preprocess_point(face.p3, mesh);
-        get_normal(face.normal, face);
-    }
-    mesh.location = {0, 0, 0};
-    mesh.scale = {1, 1, 1};
 }
 
 

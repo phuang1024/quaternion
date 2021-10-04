@@ -19,7 +19,7 @@
 
 CXX = g++
 CXXFLAGS = -Wall -O3 -fPIC
-CXXFILES = image.o api.o
+CXXFILES = api.o image.o preprocess.o
 
 .PHONY: exe static dynamic clean
 
