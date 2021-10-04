@@ -54,6 +54,11 @@ Mesh::Mesh(Mesh& other) {
 }
 
 
+Camera::Camera() {
+    fov = 1.28;
+}
+
+
 void get_normal(PF3D& dest, Tri& tri) {
     // From https://stackoverflow.com/questions/19350792
     const PF3D a = tri.p2 - tri.p1;

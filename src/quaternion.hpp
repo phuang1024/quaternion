@@ -134,6 +134,22 @@ struct Mesh {
 };
 
 /**
+ * Perspective camera.
+ * FOV is radians of the X direction.
+ */
+struct Camera {
+    Camera();
+
+    PF3D location;
+    float fov;
+};
+
+struct Scene {
+    std::vector<Mesh> meshes;
+    Camera cam;
+};
+
+/**
  * Compute normal of a triangle and store in a vector.
  */
 void get_normal(PF3D& dest, Tri& tri);
