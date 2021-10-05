@@ -9,3 +9,6 @@ format, which is described here:
 * ``width * height * 3`` bytes, each corresponding to a channel value.
 
 Endianness is dependent on your machine.
+
+You can use the script ``scripts/imgconv.py`` to convert between ``.qif``
+and another format.

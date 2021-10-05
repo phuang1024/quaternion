@@ -22,10 +22,22 @@
 #include "quaternion.hpp"
 
 
-int main() {
+int img_test() {
+    Quaternion::Image img(1920, 1080);
+    for (int i = 0; i < 1920; i++)
+        img.set(i, 100, 0, 255);
+
+    img.write("a.qif");
+}
+
+int render_test() {
     Quaternion::Scene scene;
     scene.meshes.push_back(Quaternion::primitive_cube(2));
     scene.lights.push_back(Quaternion::Light({3, -2, 4}));
     scene.cam.location = {0, -5, 1.5};
     Quaternion::preprocess(scene);
+}
+
+int main() {
+    render_test();
 }
