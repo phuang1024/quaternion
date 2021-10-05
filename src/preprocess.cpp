@@ -17,6 +17,8 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#include <cmath>
+
 #include "quaternion.hpp"
 
 
@@ -55,8 +57,35 @@ void preprocess_mesh(Mesh& mesh) {
     mesh.scale = {1, 1, 1};
 }
 
-void preprocess_cam(Scene& scene, Camera& cam) {
+
+/**
+ * Helper for preprocess_cam.
+ * Return angle between cam direction and sensor at pixel.
+ */
+float cam_px_angle(float clip, float fov, int res, int pixel) {
+    const float shutter_size = clip * tan(fov/2.0);
+    const float y = shutter_size - shutter_size / (float)res * (float)pixel * 2.0;
+    return atan(y / clip);
 }
+
+void preprocess_cam(Scene& scene, Camera& cam) {
+    const float clip = scene.clip_start;
+    const float fovx = cam.fov;
+    const float fovy = atan(tan(fovx) / (float)scene.width * (float)scene.height);
+
+    scene._angle_limits.clear();
+    scene._angle_limits.reserve(scene.width * scene.height);
+    for (int y = 0; y < scene.height; y++) {
+        for (int x = 0; x < scene.width; x++) {
+            const float x_start = cam_px_angle(clip, fovx, scene.width, x);
+            const float x_end   = cam_px_angle(clip, fovx, scene.width, x+1);
+            const float y_start = cam_px_angle(clip, fovy, scene.height, y);
+            const float y_end   = cam_px_angle(clip, fovy, scene.height, y+1);
+            scene._angle_limits.push_back(_4F(x_start, x_end, y_start, y_end));
+        }
+    }
+}
+
 
 void preprocess(Scene& scene) {
     for (int i = 0; i < (int)scene.meshes.size(); i++)

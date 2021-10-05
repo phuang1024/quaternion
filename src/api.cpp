@@ -79,6 +79,8 @@ Scene::Scene() {
     clip_start = 0.01;
     clip_end = 1000.0;
     background = {60, 60, 60};
+    width = 1920;
+    height = 1080;
 }
 
 
