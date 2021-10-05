@@ -17,13 +17,14 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#pragma once
+
 #include <string>
 #include <vector>
 
 #include <Eigen/Dense>
 
 
-// Useful stuff
 typedef  unsigned char  UCH;
 
 typedef  Eigen::Vector3f           PF3D;
@@ -36,7 +37,19 @@ typedef  Eigen::Matrix<UCH, 3, 1>  RGB;
 namespace Quaternion {
 
 
+// Convenience structs and typedefs
+// Implemntations in utils.cpp
+
+struct _4F {
+    _4F();
+    _4F(float a, float b, float c, float d);
+
+    float a, b, c, d;
+};
+
+
 // Image processing
+// Implementations in image.cpp
 
 /**
  * Image with three channels.
@@ -91,7 +104,8 @@ struct Image {
 };
 
 
-// Mesh API
+// API
+// Implementations in api.cpp
 
 /**
  * Triangle in 3D space, defined by three points.
@@ -176,13 +190,30 @@ struct Light {
 struct Scene {
     Scene();
 
-    float clip_start;
-    float clip_end;
+    /**
+     * Output dimensions in pixels.
+     */
+    int width, height;
+
+    /**
+     * Min and max distance for rendering.
+     */
+    float clip_start, clip_end;
 
     std::vector<Mesh> meshes;
     std::vector<Light> lights;
     Camera cam;
     RGB background;
+
+    // Set by preprocessor
+
+    /**
+     * Size = width * height.
+     * Entry i has values (x_min, x_max, y_min, y_max) (maps to (a, b, c, d) for _4F),
+     * specifying angle (radian) limits to fit in the pixel (x = i%height, y = i/height).
+     * Angle (0, 0) = directly forward from camera.
+     */
+    std::vector<_4F> _angle_limits;
 };
 
 /**
@@ -190,17 +221,22 @@ struct Scene {
  */
 Mesh primitive_cube(float size);
 
+
+// Preprocessing
+// Implementations in preprocess.cpp
+
 /**
  * Compute normal of a triangle and store in a vector.
  */
 void get_normal(PF3D& dest, Tri& tri);
 
 /**
- * Preprocess the mesh (modifies it in place):
+ * Preprocess the mesh (modifies it in place).
+ * This will be called automatically. No need to call manually.
  * - Apply transformations to each face.
  * - Calculate the normal of each face and store in Tri.normal
  */
-void preprocess(Mesh& mesh);
+void preprocess(Scene& scene);
 
 
 }  // namespace Quaternion

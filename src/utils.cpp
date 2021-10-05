@@ -17,15 +17,22 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-#include <iostream>
-
 #include "quaternion.hpp"
 
 
-int main() {
-    Quaternion::Scene scene;
-    scene.meshes.push_back(Quaternion::primitive_cube(2));
-    scene.lights.push_back(Quaternion::Light({3, -2, 4}));
-    scene.cam.location = {0, -5, 1.5};
-    Quaternion::preprocess(scene);
+namespace Quaternion {
+
+
+_4F::_4F() {
+    a = b = c = d = 0;
 }
+
+_4F::_4F(float a, float b, float c, float d) {
+    this->a = a;
+    this->b = b;
+    this->c = c;
+    this->d = d;
+}
+
+
+}  // namespace Quaternion

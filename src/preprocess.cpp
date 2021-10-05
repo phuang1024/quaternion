@@ -34,7 +34,7 @@ void get_normal(PF3D& dest, Tri& tri) {
 
 
 void preprocess_point(Eigen::Vector3f& point, Mesh& mesh) {
-    // Helper function
+    // Helper function for a vertex of a mesh.
     point(0) *= mesh.scale(0);
     point(1) *= mesh.scale(1);
     point(2) *= mesh.scale(2);
@@ -43,7 +43,7 @@ void preprocess_point(Eigen::Vector3f& point, Mesh& mesh) {
     point(2) += mesh.location(2);
 }
 
-void preprocess(Mesh& mesh) {
+void preprocess_mesh(Mesh& mesh) {
     for (int i = 0; i < (int)mesh.faces.size(); i++) {
         Tri& face = mesh.faces[i];
         preprocess_point(face.p1, mesh);
@@ -53,6 +53,15 @@ void preprocess(Mesh& mesh) {
     }
     mesh.location = {0, 0, 0};
     mesh.scale = {1, 1, 1};
+}
+
+void preprocess_cam(Scene& scene, Camera& cam) {
+}
+
+void preprocess(Scene& scene) {
+    for (int i = 0; i < (int)scene.meshes.size(); i++)
+        preprocess_mesh(scene.meshes[i]);
+    preprocess_cam(scene, scene.cam);
 }
 
 
