@@ -17,34 +17,20 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-/**
- * This file is just for testing and will not
- * be included in the library.
- */
-
 #include <iostream>
 
 #include "quaternion.hpp"
 
 
-void img_test() {
-    Quaternion::Image img(1920, 1080);
-    for (int i = 0; i < 1920; i++)
-        img.set(i, 100, 0, 255);
-    img.write("a.qif");
+namespace Quaternion {
+
+
+void render(Scene& scene, Image& img) {
+    if (img.width != scene.width || img.height != scene.height) {
+        std::cerr << "Quaternion::render: Dimensions must match." << std::endl;
+        throw 1;
+    }
 }
 
-void render_test() {
-    Quaternion::Scene scene;
-    scene.meshes.push_back(Quaternion::primitive_cube(2));
-    scene.lights.push_back(Quaternion::Light({3, -2, 4}));
-    scene.cam.location = {0, -5, 1.5};
 
-    Quaternion::Image img(1920, 1080);
-    Quaternion::render(scene, img);
-    img.write("out.qif");
-}
-
-int main() {
-    render_test();
-}
+}  // namespace Quaternion

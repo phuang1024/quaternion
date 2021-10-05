@@ -19,7 +19,7 @@
 
 CXX = g++
 CXXFLAGS = -Wall -O3 -fPIC
-CXXFILES = api.o image.o preprocess.o utils.o
+CXXFILES = api.o image.o preprocess.o render.o utils.o
 
 .PHONY: exe static dynamic clean
 
@@ -34,4 +34,4 @@ dynamic: $(CXXFILES)
 	$(CXX) -shared -Wl,-soname,libquaternion.so $(CXXFILES) -o libquaternion.so
 
 clean:
-	rm *.o
+	rm -f *.o

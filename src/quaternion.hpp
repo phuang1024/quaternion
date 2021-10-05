@@ -239,15 +239,15 @@ void get_normal(PF3D& dest, Tri& tri);
 void preprocess(Scene& scene);
 
 
-}  // namespace Quaternion
-
+// Rendering
+// Implementations in render.cpp
 
 /**
- * Render engine 1.
- * Raytracer with no transparency or sss.
+ * Render the scene and store in img.
+ * Throws:
+ * - 1 if dimensions do not match.
  */
-namespace QRender1 {
+void render(Scene& scene, Image& img);
 
 
-
-}  // namespace QRender1
+}  // namespace Quaternion
