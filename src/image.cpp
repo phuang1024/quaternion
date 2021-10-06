@@ -39,6 +39,10 @@ int Image::mempos(int x, int y, int channel) {
     return y*height*3 + x*3 + channel;
 }
 
+void Image::clear() {
+    memset(mem, 0, 3 * width * height);
+}
+
 UCH Image::get(int x, int y, int channel) {
     return mem[mempos(x, y, channel)];
 }

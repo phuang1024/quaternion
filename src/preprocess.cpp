@@ -63,9 +63,9 @@ void preprocess_mesh(Mesh& mesh) {
  * Return angle between cam direction and sensor at pixel.
  */
 float cam_px_angle(float clip, float fov, int res, int pixel) {
-    const float shutter_size = clip * tan(fov/2.0);
-    const float y = shutter_size - shutter_size / (float)res * (float)pixel * 2.0;
-    return atan(y / clip);
+    const float shutter_size = 2 * clip * tan(fov/2.0);
+    const float x = (shutter_size * (float)pixel / (float)res) - shutter_size/2.0;  // sensor position
+    return atan(x / clip);
 }
 
 void preprocess_cam(Scene& scene, Camera& cam) {
@@ -81,7 +81,7 @@ void preprocess_cam(Scene& scene, Camera& cam) {
             const float x_end   = cam_px_angle(clip, fovx, scene.width, x+1);
             const float y_start = cam_px_angle(clip, fovy, scene.height, y);
             const float y_end   = cam_px_angle(clip, fovy, scene.height, y+1);
-            scene._angle_limits.push_back(_4F(x_start, x_end, y_start, y_end));
+            scene._angle_limits.push_back(_4F(x_start, x_end, -y_start, -y_end));
         }
     }
 }

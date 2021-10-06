@@ -40,11 +40,25 @@ namespace Quaternion {
 // Convenience structs and typedefs
 // Implemntations in utils.cpp
 
+/**
+ * Four floats.
+ */
 struct _4F {
     _4F();
     _4F(float a, float b, float c, float d);
 
     float a, b, c, d;
+};
+
+/**
+ * 3D line represented with point and direction vector.
+ */
+struct Line {
+    Line();
+    Line(PF3D point, PF3D dir);
+
+    PF3D point;
+    PF3D dir;
 };
 
 
@@ -69,6 +83,11 @@ struct Image {
      * Index of byte to satisfy arguments.
      */
     int mempos(int x, int y, int channel);
+
+    /**
+     * Set all channels and pixels to 0.
+     */
+    void clear();
 
     /**
      * Get value at (x, y) and channel.
@@ -116,7 +135,7 @@ struct Tri {
      */
     Tri();
 
-    Tri(PF3D& p1, PF3D& p2, PF3D& p3);
+    Tri(PF3D p1, PF3D p2, PF3D p3);
 
     Tri(const Tri& other);
 
@@ -210,7 +229,7 @@ struct Scene {
     /**
      * Size = width * height.
      * Entry i has values (x_min, x_max, y_min, y_max) (maps to (a, b, c, d) for _4F),
-     * specifying angle (radian) limits to fit in the pixel (x = i%height, y = i/height).
+     * specifying angle (radian) limits to fit in the pixel (x = i%width, y = i/width).
      * Angle (0, 0) = directly forward from camera.
      */
     std::vector<_4F> _angle_limits;
@@ -237,6 +256,8 @@ void get_normal(PF3D& dest, Tri& tri);
  * - Calculate the normal of each face and store in Tri.normal
  */
 void preprocess(Scene& scene);
+
+bool intersects(const PF3D, const PF3D, const Tri&);
 
 
 // Rendering

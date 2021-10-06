@@ -36,15 +36,28 @@ void img_test() {
 
 void render_test() {
     Quaternion::Scene scene;
-    scene.meshes.push_back(Quaternion::primitive_cube(2));
+
+    //scene.meshes.push_back(Quaternion::primitive_cube(2));
+    Quaternion::Mesh m;
+    m.faces.push_back(Quaternion::Tri({-2, 0, -2}, {-2, 0, 2}, {2, 0, 0}));
+    scene.meshes.push_back(m);
+
     scene.lights.push_back(Quaternion::Light({3, -2, 4}));
     scene.cam.location = {0, -5, 1.5};
 
     Quaternion::Image img(1920, 1080);
+    img.clear();
     Quaternion::render(scene, img);
     img.write("out.qif");
 }
 
 int main() {
+    /*
+    PF3D q1 = {0, -10, 0};
+    PF3D q2 = {0, 10, 1.9};
+    Quaternion::Tri tri({-2, 0, -2}, {-2, 0, 2}, {2, 0, 0});
+    std::cout << Quaternion::intersects(q1, q2, tri) << std::endl;
+    */
+
     render_test();
 }

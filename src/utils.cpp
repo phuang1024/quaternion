@@ -35,4 +35,15 @@ _4F::_4F(float a, float b, float c, float d) {
 }
 
 
+Line::Line() {
+    point = {0, 0, 0};
+    dir = {1, 0, 0};
+}
+
+Line::Line(PF3D point, PF3D dir) {
+    this->point = point;
+    this->dir = dir;
+}
+
+
 }  // namespace Quaternion

@@ -29,7 +29,7 @@ Tri::Tri() {
     p3 = {0, 0, 0};
 }
 
-Tri::Tri(PF3D& p1, PF3D& p2, PF3D& p3) {
+Tri::Tri(PF3D p1, PF3D p2, PF3D p3) {
     this->p1 = p1;
     this->p2 = p2;
     this->p3 = p3;
