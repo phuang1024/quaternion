@@ -13,3 +13,5 @@
 /build
 
 /docs/_build
+
+!/images/*

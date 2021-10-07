@@ -52,6 +52,7 @@ void render_test() {
     scene.cam.location = {1.5, -5, 1.5};
 
     Quaternion::RenderSettings settings;
+    settings.samples = 1;
 
     Quaternion::Image img(1920, 1080);
     img.clear();

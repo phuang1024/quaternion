@@ -78,6 +78,51 @@ void intersect_pt(PF3D& dest, const PF3D q1, const PF3D q2, const Tri& tri) {
 }
 
 
+void render_px(Scene& scene, Image& img, RenderSettings& settings, int x, int y) {
+    const double clip_end = scene.clip_end;
+    const PF3D cam_loc = scene.cam.location;
+
+    bool intersect = false;  // whether there was any intersect
+    double total_dist = 0;   // total distance of closest face from all samples
+    for (int s = 0; s < (int)settings.samples; s++) {
+        const _4F& lims = scene._angle_limits[y*scene.width + x];
+        const double x_angle = Random::uniform(lims.a, lims.b);
+        const double y_angle = Random::uniform(lims.c, lims.d);
+        Line ray(cam_loc, {tanf(x_angle), 1, tanf(y_angle)});
+
+        // Fake algorithm for now
+        const PF3D q1 = ray.point;
+        const PF3D q2 = ray.point + 2*clip_end*ray.dir;
+
+        Tri* face_ind = nullptr;
+        double min_dist = clip_end;
+        for (int i = 0; i < (int)scene._fptrs.size(); i++) {
+            Tri& tri = *scene._fptrs[i];
+            if (intersects(q1, q2, tri)) {
+                PF3D inter;
+                intersect_pt(inter, q1, q2, tri);
+                const double dist = hypot(inter(0)-cam_loc(0), inter(1)-cam_loc(1), inter(2)-cam_loc(2));
+                if (dist < min_dist) {
+                    min_dist = dist;
+                    face_ind = &tri;
+                }
+            }
+        }
+
+        if (face_ind != nullptr) {
+            intersect = true;
+            total_dist += min_dist;
+        }
+    }
+
+    if (intersect) {
+        const UCH v = 255.0 / total_dist * settings.samples;
+        img.set(x, y, 0, v);
+        img.set(x, y, 1, v);
+        img.set(x, y, 2, v);
+    }
+}
+
 void render(Scene& scene, Image& img, RenderSettings& settings) {
     if (img.width != scene.width || img.height != scene.height) {
         std::cerr << "Quaternion::render: Dimensions must match." << std::endl;
@@ -86,47 +131,9 @@ void render(Scene& scene, Image& img, RenderSettings& settings) {
 
     preprocess(scene);
 
-    const double clip_end = scene.clip_end;
-    const PF3D cam_loc = scene.cam.location;
-
     for (int y = 0; y < scene.height; y++) {
         for (int x = 0; x < scene.width; x++) {
-            bool intersect = false;  // whether there was any intersect
-            double total_dist = 0;   // total distance of closest face from all samples
-
-            for (int s = 0; s < (int)settings.samples; s++) {
-                const _4F& lims = scene._angle_limits[y*scene.width + x];
-                const double x_angle = Random::uniform(lims.a, lims.b);
-                const double y_angle = Random::uniform(lims.c, lims.d);
-                Line ray(cam_loc, {tanf(x_angle), 1, tanf(y_angle)});
-
-                // Fake algorithm for now
-                const PF3D q1 = ray.point;
-                const PF3D q2 = ray.point + 2*clip_end*ray.dir;
-
-                Tri* face_ind = nullptr;
-                double min_dist = clip_end;
-                for (int i = 0; i < (int)scene._fptrs.size(); i++) {
-                    Tri& tri = *scene._fptrs[i];
-                    if (intersects(q1, q2, tri)) {
-                        PF3D inter;
-                        intersect_pt(inter, q1, q2, tri);
-                        const double dist = hypot(inter(0)-cam_loc(0), inter(1)-cam_loc(1), inter(2)-cam_loc(2));
-                        if (dist < min_dist) {
-                            min_dist = dist;
-                            face_ind = &tri;
-                        }
-                    }
-                }
-
-                if (face_ind != nullptr) {
-                    intersect = true;
-                    total_dist += min_dist;
-                }
-            }
-
-            if (intersect)
-                img.set(x, y, 0, 255.0 / total_dist * settings.samples);
+            render_px(scene, img, settings, x, y);
         }
     }
 }
