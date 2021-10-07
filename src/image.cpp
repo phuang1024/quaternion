@@ -36,7 +36,7 @@ Image::Image(int width, int height) {
 }
 
 int Image::mempos(int x, int y, int channel) {
-    return y*height*3 + x*3 + channel;
+    return y*width*3 + x*3 + channel;
 }
 
 void Image::clear() {

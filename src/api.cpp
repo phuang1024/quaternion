@@ -66,7 +66,7 @@ Light::Light() {
     power = 1;
 }
 
-Light::Light(float power) {
+Light::Light(double power) {
     this->power = power;
 }
 
@@ -84,8 +84,8 @@ Scene::Scene() {
 }
 
 
-Mesh primitive_cube(float size) {
-    const float half = size / 2.0;
+Mesh primitive_cube(double size) {
+    const double half = size / 2.0;
 
     PF3D v1({-half, -half, half});
     PF3D v2({-half, half, half});

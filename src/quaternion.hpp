@@ -27,7 +27,7 @@
 
 typedef  unsigned char  UCH;
 
-typedef  Eigen::Vector3f           PF3D;
+typedef  Eigen::Vector3d           PF3D;
 typedef  Eigen::Matrix<UCH, 3, 1>  RGB;
 
 
@@ -41,13 +41,13 @@ namespace Quaternion {
 // Implemntations in utils.cpp
 
 /**
- * Four floats.
+ * Four doubles.
  */
 struct _4F {
     _4F();
-    _4F(float a, float b, float c, float d);
+    _4F(double a, double b, double c, double d);
 
-    float a, b, c, d;
+    double a, b, c, d;
 };
 
 /**
@@ -179,7 +179,7 @@ struct Camera {
     Camera();
 
     PF3D location;
-    float fov;
+    double fov;
 };
 
 /**
@@ -191,7 +191,7 @@ struct Light {
     /**
      * Initialize with power.
      */
-    Light(float power);
+    Light(double power);
 
     /**
      * Initialize with location.
@@ -199,7 +199,7 @@ struct Light {
     Light(PF3D location);
 
     PF3D location;
-    float power;
+    double power;
 };
 
 /**
@@ -217,7 +217,7 @@ struct Scene {
     /**
      * Min and max distance for rendering.
      */
-    float clip_start, clip_end;
+    double clip_start, clip_end;
 
     std::vector<Mesh> meshes;
     std::vector<Light> lights;
@@ -238,7 +238,7 @@ struct Scene {
 /**
  * Create a cube mesh with side length size at the origin.
  */
-Mesh primitive_cube(float size);
+Mesh primitive_cube(double size);
 
 
 // Preprocessing

@@ -18,6 +18,7 @@
 //
 
 #include <cmath>
+#include <iostream>
 
 #include "quaternion.hpp"
 
@@ -35,7 +36,7 @@ void get_normal(PF3D& dest, Tri& tri) {
 }
 
 
-void preprocess_point(Eigen::Vector3f& point, Mesh& mesh) {
+void preprocess_point(PF3D& point, Mesh& mesh) {
     // Helper function for a vertex of a mesh.
     point(0) *= mesh.scale(0);
     point(1) *= mesh.scale(1);
@@ -62,25 +63,25 @@ void preprocess_mesh(Mesh& mesh) {
  * Helper for preprocess_cam.
  * Return angle between cam direction and sensor at pixel.
  */
-float cam_px_angle(float clip, float fov, int res, int pixel) {
-    const float shutter_size = 2 * clip * tan(fov/2.0);
-    const float x = (shutter_size * (float)pixel / (float)res) - shutter_size/2.0;  // sensor position
+double cam_px_angle(double clip, double fov, int res, int pixel) {
+    const double shutter_size = 2 * clip * tan(fov/2.0);
+    const double x = (shutter_size * (double)pixel / (double)res) - shutter_size/2.0;  // sensor position
     return atan(x / clip);
 }
 
 void preprocess_cam(Scene& scene, Camera& cam) {
-    const float clip = scene.clip_start;
-    const float fovx = cam.fov;
-    const float fovy = atan(tan(fovx) / (float)scene.width * (float)scene.height);
+    const double clip = scene.clip_start;
+    const double fovx = cam.fov;
+    const double fovy = 2 * atan(tan(fovx/2) / (double)scene.width * (double)scene.height);
 
     scene._angle_limits.clear();
     scene._angle_limits.reserve(scene.width * scene.height);
     for (int y = 0; y < scene.height; y++) {
         for (int x = 0; x < scene.width; x++) {
-            const float x_start = cam_px_angle(clip, fovx, scene.width, x);
-            const float x_end   = cam_px_angle(clip, fovx, scene.width, x+1);
-            const float y_start = cam_px_angle(clip, fovy, scene.height, y);
-            const float y_end   = cam_px_angle(clip, fovy, scene.height, y+1);
+            const double x_start = cam_px_angle(clip, fovx, scene.width, x);
+            const double x_end   = cam_px_angle(clip, fovx, scene.width, x+1);
+            const double y_start = cam_px_angle(clip, fovy, scene.height, y);
+            const double y_end   = cam_px_angle(clip, fovy, scene.height, y+1);
             scene._angle_limits.push_back(_4F(x_start, x_end, -y_start, -y_end));
         }
     }

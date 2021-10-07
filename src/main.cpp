@@ -29,21 +29,27 @@
 
 void img_test() {
     Quaternion::Image img(1920, 1080);
-    for (int i = 0; i < 1920; i++)
-        img.set(i, 100, 0, 255);
-    img.write("a.qif");
+    for (int y = 0; y < 1080; y++) {
+        for (int x = 0; x < 1920; x++) {
+            double dist = hypot(x-960, y-540);
+            double fac = (100.0-dist) / 100.0;
+            if (fac > 0)
+                img.set(x, y, 0, 255*fac);
+        }
+    }
+    img.write("out.qif");
 }
 
 void render_test() {
     Quaternion::Scene scene;
 
-    //scene.meshes.push_back(Quaternion::primitive_cube(2));
-    Quaternion::Mesh m;
-    m.faces.push_back(Quaternion::Tri({-2, 0, -2}, {-2, 0, 2}, {2, 0, 0}));
-    scene.meshes.push_back(m);
+    scene.meshes.push_back(Quaternion::primitive_cube(2));
+    //Quaternion::Mesh m;
+    //m.faces.push_back(Quaternion::Tri({-2, 0, -2}, {-2, 0, 2}, {2, 0, 0}));
+    //scene.meshes.push_back(m);
 
     scene.lights.push_back(Quaternion::Light({3, -2, 4}));
-    scene.cam.location = {0, -5, 1.5};
+    scene.cam.location = {1.5, -5, 1.5};
 
     Quaternion::Image img(1920, 1080);
     img.clear();
@@ -57,7 +63,7 @@ int main() {
     PF3D q2 = {0, 10, 1.9};
     Quaternion::Tri tri({-2, 0, -2}, {-2, 0, 2}, {2, 0, 0});
     std::cout << Quaternion::intersects(q1, q2, tri) << std::endl;
-    */
+     */
 
     render_test();
 }

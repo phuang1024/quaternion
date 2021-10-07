@@ -27,7 +27,7 @@ _4F::_4F() {
     a = b = c = d = 0;
 }
 
-_4F::_4F(float a, float b, float c, float d) {
+_4F::_4F(double a, double b, double c, double d) {
     this->a = a;
     this->b = b;
     this->c = c;

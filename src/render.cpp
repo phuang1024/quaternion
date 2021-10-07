@@ -41,7 +41,7 @@ namespace Quaternion {
  * From https://stackoverflow.com/questions/42740765
  * Calculates volume of tetrahedron.
  */
-float signed_volume(PF3D a, PF3D b, PF3D c, PF3D d) {
+double signed_volume(PF3D a, PF3D b, PF3D c, PF3D d) {
     return (0.166) * (b-a).cross(c-a).dot(d-a);
 }
 
@@ -68,7 +68,7 @@ void render(Scene& scene, Image& img) {
 
     preprocess(scene);
 
-    const float clip_end = scene.clip_end;
+    const double clip_end = scene.clip_end;
 
     for (int y = 0; y < scene.height; y++) {
         for (int x = 0; x < scene.width; x++) {
@@ -76,10 +76,11 @@ void render(Scene& scene, Image& img) {
             Line ray(scene.cam.location, {tanf(lims.a), 1, tanf(lims.c)});
 
             // Fake algorithm for now
-            const PF3D q1 = ray.point + 2*clip_end*ray.dir;
-            const PF3D q2 = ray.point - 2*clip_end*ray.dir;
+            const PF3D q1 = ray.point;
+            const PF3D q2 = ray.point + 2*clip_end*ray.dir;
             //printf("%d %d %f %f\n", x, y, lims.a, lims.c);
-            printf("%i %i  %f %f  %f %f %f  %f %f %f\n", x, y, lims.a, lims.c, q1(0), q1(1), q1(2), q2(0), q2(1), q2(2));
+            //printf("%i %i  %f %f  %f %f %f  %f %f %f\n", x, y, lims.a, lims.c, q1(0), q1(1), q1(2), q2(0), q2(1), q2(2));
+            //if (x > 30) throw 1;
 
             bool inter = false;
             for (int i = 0; i < (int)scene.meshes.size(); i++) {
