@@ -78,22 +78,13 @@ void render(Scene& scene, Image& img) {
             // Fake algorithm for now
             const PF3D q1 = ray.point;
             const PF3D q2 = ray.point + 2*clip_end*ray.dir;
-            //printf("%d %d %f %f\n", x, y, lims.a, lims.c);
-            //printf("%i %i  %f %f  %f %f %f  %f %f %f\n", x, y, lims.a, lims.c, q1(0), q1(1), q1(2), q2(0), q2(1), q2(2));
-            //if (x > 30) throw 1;
 
             bool inter = false;
-            for (int i = 0; i < (int)scene.meshes.size(); i++) {
-                if (inter)
+            for (int i = 0; i < (int)scene._fptrs.size(); i++) {
+                const Tri& tri = *scene._fptrs[i];
+                if (intersects(q1, q2, tri)) {
+                    inter = true;
                     break;
-
-                const Mesh& mesh = scene.meshes[i];
-                for (int j = 0; j < (int)mesh.faces.size(); j++) {
-                    const Tri& tri = mesh.faces[j];
-                    if (intersects(q1, q2, tri)) {
-                        inter = true;
-                        break;
-                    }
                 }
             }
 

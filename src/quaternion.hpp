@@ -233,6 +233,12 @@ struct Scene {
      * Angle (0, 0) = directly forward from camera.
      */
     std::vector<_4F> _angle_limits;
+
+    /**
+     * Vector of pointers to each face.
+     * Easier indexing of faces.
+     */
+    std::vector<Tri*> _fptrs;
 };
 
 /**

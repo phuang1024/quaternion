@@ -46,9 +46,10 @@ void preprocess_point(PF3D& point, Mesh& mesh) {
     point(2) += mesh.location(2);
 }
 
-void preprocess_mesh(Mesh& mesh) {
+void preprocess_mesh(Scene& scene, Mesh& mesh) {
     for (int i = 0; i < (int)mesh.faces.size(); i++) {
         Tri& face = mesh.faces[i];
+        scene._fptrs.push_back(&face);
         preprocess_point(face.p1, mesh);
         preprocess_point(face.p2, mesh);
         preprocess_point(face.p3, mesh);
@@ -89,8 +90,9 @@ void preprocess_cam(Scene& scene, Camera& cam) {
 
 
 void preprocess(Scene& scene) {
+    scene._fptrs.clear();
     for (int i = 0; i < (int)scene.meshes.size(); i++)
-        preprocess_mesh(scene.meshes[i]);
+        preprocess_mesh(scene, scene.meshes[i]);
     preprocess_cam(scene, scene.cam);
 }
 
