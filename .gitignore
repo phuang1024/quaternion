@@ -5,8 +5,11 @@
 *.so
 *.out
 
-*.qif  # Quaternion image format
+# Images
+*.qif
 *.png
 *.jpg
+
+/build
 
 /docs/_build
