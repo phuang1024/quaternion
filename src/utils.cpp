@@ -51,4 +51,12 @@ double hypot(const double dx, const double dy, const double dz) {
 }
 
 
+namespace Random {
+    double uniform(const double lower, const double upper) {
+        const double num = ((double)rand())/1e9 + (double)rand();
+        return lower + fmod(num, upper-lower);
+    }
+}
+
+
 }  // namespace Quaternion

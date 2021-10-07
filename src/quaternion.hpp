@@ -64,6 +64,13 @@ struct Line {
  */
 double hypot(const double dx, const double dy, const double dz);
 
+namespace Random {
+    /**
+     * Generate random double between bounds.
+     */
+    double uniform(const double lower, const double upper);
+}
+
 
 // Image processing
 // Implementations in image.cpp
