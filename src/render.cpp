@@ -50,13 +50,25 @@ double signed_volume(PF3D a, PF3D b, PF3D c, PF3D d) {
  * Checks if line segment through p1 and p2 intersects tri.
  */
 bool intersects(const PF3D q1, const PF3D q2, const Tri& tri) {
-    const PF3D p1 = tri.p1, p2 = tri.p2, p3 = tri.p3;
+    const PF3D& p1 = tri.p1, p2 = tri.p2, p3 = tri.p3;
     const bool v1 = sign(signed_volume(q1, p1, p2, p3));
     const bool v2 = sign(signed_volume(q2, p1, p2, p3));
     const bool v3 = sign(signed_volume(q1, q2, p1, p2));
     const bool v4 = sign(signed_volume(q1, q2, p2, p3));
     const bool v5 = sign(signed_volume(q1, q2, p3, p1));
     return (v1 != v2) && (v3 == v4) && (v4 == v5);
+}
+
+
+/**
+ * From https://stackoverflow.com/questions/42740765
+ * Finds intersection of line segment and tri and stores in @param dest.
+ */
+void intersect_pt(PF3D& dest, const PF3D q1, const PF3D q2, const Tri& tri) {
+    const PF3D& p1 = tri.p1, p2 = tri.p2, p3 = tri.p3;
+    const PF3D n = (p2-p1).cross(p3-p1);
+    const double t = -(q1-p1).dot(n) / (q2-q1).dot(n);
+    dest = q1 + t * (q2-q1);
 }
 
 
@@ -69,27 +81,34 @@ void render(Scene& scene, Image& img) {
     preprocess(scene);
 
     const double clip_end = scene.clip_end;
+    const PF3D cam_loc = scene.cam.location;
 
     for (int y = 0; y < scene.height; y++) {
         for (int x = 0; x < scene.width; x++) {
             const _4F& lims = scene._angle_limits[y*scene.width + x];
-            Line ray(scene.cam.location, {tanf(lims.a), 1, tanf(lims.c)});
+            Line ray(cam_loc, {tanf(lims.a), 1, tanf(lims.c)});
 
             // Fake algorithm for now
             const PF3D q1 = ray.point;
             const PF3D q2 = ray.point + 2*clip_end*ray.dir;
 
-            bool inter = false;
+            Tri* face_ind = nullptr;
+            double min_dist = clip_end;
             for (int i = 0; i < (int)scene._fptrs.size(); i++) {
-                const Tri& tri = *scene._fptrs[i];
+                Tri& tri = *scene._fptrs[i];
                 if (intersects(q1, q2, tri)) {
-                    inter = true;
-                    break;
+                    PF3D inter;
+                    intersect_pt(inter, q1, q2, tri);
+                    const double dist = hypot(inter(0)-cam_loc(0), inter(1)-cam_loc(1), inter(2)-cam_loc(2));
+                    if (dist < min_dist) {
+                        min_dist = dist;
+                        face_ind = &tri;
+                    }
                 }
             }
 
-            if (inter)
-                img.set(x, y, 0, 255);
+            if (face_ind != nullptr)
+                img.set(x, y, 0, 255.0 / min_dist);
         }
     }
 }

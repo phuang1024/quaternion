@@ -46,4 +46,9 @@ Line::Line(PF3D point, PF3D dir) {
 }
 
 
+double hypot(const double dx, const double dy, const double dz) {
+    return pow(dx*dx + dy*dy + dz*dz, 0.5);
+}
+
+
 }  // namespace Quaternion

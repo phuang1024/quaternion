@@ -31,13 +31,10 @@ typedef  Eigen::Vector3d           PF3D;
 typedef  Eigen::Matrix<UCH, 3, 1>  RGB;
 
 
-/**
- * API and processing.
- */
 namespace Quaternion {
 
 
-// Convenience structs and typedefs
+// Convenience structs, typedefs, and functions.
 // Implemntations in utils.cpp
 
 /**
@@ -60,6 +57,11 @@ struct Line {
     PF3D point;
     PF3D dir;
 };
+
+/**
+ * hypot() but in 3d.
+ */
+double hypot(const double dx, const double dy, const double dz);
 
 
 // Image processing
