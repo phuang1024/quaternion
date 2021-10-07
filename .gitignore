@@ -5,7 +5,7 @@
 *.so
 *.out
 
-*.qif
+*.qif  # Quaternion image format
 *.png
 *.jpg
 
