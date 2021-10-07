@@ -51,9 +51,11 @@ void render_test() {
     scene.lights.push_back(Quaternion::Light({3, -2, 4}));
     scene.cam.location = {1.5, -5, 1.5};
 
+    Quaternion::RenderSettings settings;
+
     Quaternion::Image img(1920, 1080);
     img.clear();
-    Quaternion::render(scene, img);
+    Quaternion::render(scene, img, settings);
     img.write("out.qif");
 }
 

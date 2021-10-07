@@ -37,6 +37,12 @@ bool sign(int n) {
 namespace Quaternion {
 
 
+RenderSettings::RenderSettings() {
+    samples = 16;
+    max_bounces = 8;
+}
+
+
 /**
  * From https://stackoverflow.com/questions/42740765
  * Calculates volume of tetrahedron.
@@ -72,7 +78,7 @@ void intersect_pt(PF3D& dest, const PF3D q1, const PF3D q2, const Tri& tri) {
 }
 
 
-void render(Scene& scene, Image& img) {
+void render(Scene& scene, Image& img, RenderSettings& settings) {
     if (img.width != scene.width || img.height != scene.height) {
         std::cerr << "Quaternion::render: Dimensions must match." << std::endl;
         throw 1;

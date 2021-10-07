@@ -26,6 +26,7 @@
 
 
 typedef  unsigned char  UCH;
+typedef  unsigned int   UINT;
 
 typedef  Eigen::Vector3d           PF3D;
 typedef  Eigen::Matrix<UCH, 3, 1>  RGB;
@@ -272,11 +273,21 @@ bool intersects(const PF3D, const PF3D, const Tri&);
 // Implementations in render.cpp
 
 /**
+ * Groups together settings for rendering.
+ */
+struct RenderSettings {
+    RenderSettings();
+
+    UINT samples;
+    UINT max_bounces;
+};
+
+/**
  * Render the scene and store in img.
  * Throws:
  * - 1 if dimensions do not match.
  */
-void render(Scene& scene, Image& img);
+void render(Scene& scene, Image& img, RenderSettings& settings);
 
 
 }  // namespace Quaternion
