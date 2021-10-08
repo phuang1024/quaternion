@@ -51,6 +51,7 @@ double signed_volume(PF3D a, PF3D b, PF3D c, PF3D d) {
     return (0.166) * (b-a).cross(c-a).dot(d-a);
 }
 
+
 /**
  * From https://stackoverflow.com/questions/42740765
  * Checks if line segment through p1 and p2 intersects tri.
@@ -65,7 +66,6 @@ bool intersects(const PF3D q1, const PF3D q2, const Tri& tri) {
     return (v1 != v2) && (v3 == v4) && (v4 == v5);
 }
 
-
 /**
  * From https://stackoverflow.com/questions/42740765
  * Finds intersection of line segment and tri and stores in @param dest.
@@ -75,6 +75,18 @@ void intersect_pt(PF3D& dest, const PF3D q1, const PF3D q2, const Tri& tri) {
     const PF3D n = (p2-p1).cross(p3-p1);
     const double t = -(q1-p1).dot(n) / (q2-q1).dot(n);
     dest = q1 + t * (q2-q1);
+}
+
+
+/**
+ * Closest distance between a line and a point.
+ * From https://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
+ */
+double closest_dist(Line& line, PF3D point) {
+    const PF3D p2 = line.point + line.dir;
+    const double t = -(line.point-point).dot(p2-line.point) / pow((p2-line.point).norm(), 2);
+    const PF3D line_pt = line.point + t*line.dir;
+    return (line_pt-point).norm();
 }
 
 
