@@ -48,7 +48,7 @@ RenderSettings::RenderSettings() {
  * Calculates volume of tetrahedron.
  */
 double signed_volume(PF3D a, PF3D b, PF3D c, PF3D d) {
-    return (0.166) * (b-a).cross(c-a).dot(d-a);
+    return (b-a).cross(c-a).dot(d-a) / 6.0;
 }
 
 
@@ -102,7 +102,6 @@ void render_px(Scene& scene, Image& img, RenderSettings& settings, int x, int y)
         const double y_angle = Random::uniform(lims.c, lims.d);
         Line ray(cam_loc, {tanf(x_angle), 1, tanf(y_angle)});
 
-        // Fake algorithm for now
         const PF3D q1 = ray.point;
         const PF3D q2 = ray.point + 2*clip_end*ray.dir;
 

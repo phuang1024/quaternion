@@ -43,10 +43,10 @@ void img_test() {
 void render_test() {
     Quaternion::Scene scene;
 
+    Quaternion::Mesh cube = Quaternion::primitive_cube(1);
+    cube.location = {3, 1, 2};
+    scene.meshes.push_back(cube);
     scene.meshes.push_back(Quaternion::primitive_cube(2));
-    //Quaternion::Mesh m;
-    //m.faces.push_back(Quaternion::Tri({-2, 0, -2}, {-2, 0, 2}, {2, 0, 0}));
-    //scene.meshes.push_back(m);
 
     scene.lights.push_back(Quaternion::Light({3, -2, 4}));
     scene.cam.location = {1.5, -5, 1.5};
